@@ -7,20 +7,8 @@ tweb.config(['$routeProvider',
                     templateUrl: 'res/partials/home.html',
                     controller: 'home'
                 }).
-                when('/login', {
-                    templateUrl: 'res/partials/login.html',
-                    controller: 'login'
-                }).
-				when('/polls', {
-                    templateUrl: 'res/partials/polls.html',
-                    controller: 'polls'
-                }).
-				when('/join', {
-                    templateUrl: 'res/partials/join.html',
-                    controller: 'join'
-                }).
                 otherwise({
-                    redirectTo: '/login'
+                    redirectTo: '/'
                 });
         }]);
 
@@ -29,6 +17,7 @@ tweb.controller('home', function($scope, serveurSync) {
 	$scope.datas = "";
   $scope.labels = [];
   $scope.data = [];
+
 //données affichée sur la page home.html
 	serveurSync.registerCbs(function(datas){
 		$scope.datas = datas;
@@ -43,16 +32,11 @@ tweb.controller('home', function($scope, serveurSync) {
 
     $scope.labels = tabLabels;
     $scope.data = tabValues;
-
-
 	});
 
 	$scope.vote = function(index){
 		serveurSync.voter(index);
 	};
-
-
-
 });
 
 tweb.factory('serveurSync', function(){
@@ -77,16 +61,4 @@ tweb.factory('serveurSync', function(){
 		voter: _voter,
 		registerCbs: _registerCbs
 	}
-});
-
-tweb.controller('login', function($scope) {
-	$scope.message = 'Page: login';
-});
-
-tweb.controller('polls', function($scope) {
-	$scope.message = 'Page: polls';
-});
-
-tweb.controller('join', function($scope) {
-	$scope.message = 'Page: join';
 });

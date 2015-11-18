@@ -39,7 +39,7 @@ sio.sockets.on('connection', function (socket){
   // Sur Home, le bouton appelle la fonction vote() qui appelle la fonction voter de la factory serveurSync qui emmet un signal registerResult avec un index qui est traité ici (fiouf !)
 	socket.on('registerResult', function(index){
 		tabVotes[index].count++;
-    // broadcast pour tous les clients ?
+    
 		sio.sockets.emit('sendResult', tabVotes);
 	});
 });
