@@ -35,11 +35,17 @@ var tabVotes = [
 }
 ];
 
+
+
 sio.sockets.on('connection', function (socket){
   // Sur Home, le bouton appelle la fonction vote() qui appelle la fonction voter de la factory serveurSync qui emmet un signal registerResult avec un index qui est traité ici (fiouf !)
-	socket.on('registerResult', function(index){
+  socket.on('askResult', function(){
+    socket.emit('sendResult', tabVotes);
+    console.log("Client ask results on connection");
+  });
+  socket.on('registerResult', function(index){
 		tabVotes[index].count++;
-    
 		sio.sockets.emit('sendResult', tabVotes);
+    console.log("client voted");
 	});
 });

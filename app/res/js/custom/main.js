@@ -1,5 +1,5 @@
 var tweb = angular.module('tweb', ['ngRoute', 'ngAnimate','chart.js']);
-
+// var io = require('socket.io');
 tweb.config(['$routeProvider',
         function($routeProvider) {
             $routeProvider.
@@ -12,8 +12,8 @@ tweb.config(['$routeProvider',
                 });
         }]);
 
-
 tweb.controller('home', function($scope, serveurSync) {
+  // Données et labels
 	$scope.datas = "";
   $scope.labels = [];
   $scope.data = [];
@@ -32,7 +32,11 @@ tweb.controller('home', function($scope, serveurSync) {
 
     $scope.labels = tabLabels;
     $scope.data = tabValues;
+    $scope.$apply(); // Merci Simon
 	});
+  ///////
+  serveurSync.connection();
+  serveurSync.getResults();
 
 	$scope.vote = function(index){
 		serveurSync.voter(index);
@@ -40,14 +44,20 @@ tweb.controller('home', function($scope, serveurSync) {
 });
 
 tweb.factory('serveurSync', function(){
-	var sock = io.connect();
+	var sock;
 	var _cbResults = null;
 
 // on recoit le tableau complet du serveur
-	sock.on('sendResult', function(datas){
-		if (_cbResults !== null)
-			_cbResults(datas);
-	});
+
+  var _connection = function(){
+    sock = io.connect();
+    sock.on('sendResult', function(datas){
+  		if (_cbResults !== null)
+  			_cbResults(datas);
+  	});
+
+  };
+
 
 	var _voter = function(index){
 		sock.emit('registerResult', index);
@@ -57,8 +67,14 @@ tweb.factory('serveurSync', function(){
 		_cbResults = cbResults;
 	};
 
+  var _getResults = function(){
+    sock.emit('askResult');
+  };
+
 	return {
 		voter: _voter,
-		registerCbs: _registerCbs
+		registerCbs: _registerCbs,
+    getResults: _getResults,
+    connection: _connection
 	}
 });
