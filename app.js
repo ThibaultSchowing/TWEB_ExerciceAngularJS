@@ -48,4 +48,10 @@ sio.sockets.on('connection', function (socket){
 		sio.sockets.emit('sendResult', tabVotes);
     console.log("client voted");
 	});
+  socket.on('reset', function(){
+    for( var i = 0; i < tabVotes.length; i++){
+      tabVotes[i].count = 0;
+    }
+    sio.sockets.emit('sendResult', tabVotes);
+  });
 });

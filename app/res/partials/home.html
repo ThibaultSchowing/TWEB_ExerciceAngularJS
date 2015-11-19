@@ -1,12 +1,18 @@
 <br/>
-<button type="button" class="btn btn-default" ng-click="vote(0)">Oui</button>
-<button type="button" class="btn btn-default" ng-click="vote(1)">Non</button>
-<button type="button" class="btn btn-default" ng-click="vote(2)">Ne sait pas</button>
+<h1>{{title}}</h1>
+<div class="row container">
+  <button type="button" class="btn btn-default" ng-click="vote(0)">Oui</button>
+  <button type="button" class="btn btn-default" ng-click="vote(1)">Non</button>
+  <button type="button" class="btn btn-default" ng-click="vote(2)">Ne sait pas</button>
+</div>
+<div class="row container">
+  <button type="button" class="btn bth-success" ng-click="reset()">Reset</button>
+</div>
 
 <div class="container" style="visibility:visible;">
   {{datas}}
 </div>
 
-<div class="container">
+<div class="container col-md-6">
   <canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
 </div>
